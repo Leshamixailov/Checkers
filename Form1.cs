@@ -252,14 +252,18 @@ namespace Checkers
             }
             }
         }
-
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void CheckerMove(Point to,Point from,bool move1)
         {
-            int x = e.X;
-            int y = e.Y;
-            int PositionX = (e.X - 20) / 100;
-            int PositionY = (e.Y - 20) / 100;
-
+            Position[to.X, to.Y].Id = "Пусто";
+            if(move1)
+            Position[from.X, from.Y].Id = "Белая шашка";
+            else
+            Position[from.X, from.Y].Id = "Черная шашка";
+            move = !move;
+            Control();
+        }
+        private void Control()
+        {
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -269,33 +273,56 @@ namespace Checkers
                         Position[i, j].Id = "Пусто";
                 }
             }
+        }
+        private void CheckOpponent(int PositionX, int PositionY)
+        {
             Position[PositionY, PositionX].Acive = true;
 
             if (move && Position[PositionX, PositionY].Id == "Белая шашка")
             {
-                //if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id != "Белая шашка")
-                //    Position[PositionX + 1, PositionY + 1].Id = "#";
-                if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id != "Белая шашка")
+
+                if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Пусто")
                     Position[PositionX - 1, PositionY - 1].Id = "#";
-                //if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id != "Белая шашка")
-                //    Position[PositionX - 1, PositionY + 1].Id = "#";
-                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id != "Белая шашка")
+
+
+                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Пусто")
                     Position[PositionX + 1, PositionY - 1].Id = "#";
             }
-            if(!move && Position[PositionX, PositionY].Id == "Черная шашка") 
+            if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
             {
-                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id != "Черная шашка")
+                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Пусто")
                     Position[PositionX + 1, PositionY + 1].Id = "#";
-                //if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id != "Черная шашка")
-                //    Position[PositionX - 1, PositionY - 1].Id = "#";
-                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id != "Черная шашка")
-                    Position[PositionX - 1, PositionY + 1].Id = "#";
-                //if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id != "Черная шашка")
-                //    Position[PositionX + 1, PositionY - 1].Id = "#";
-            }
-           
 
-            
+                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Пусто")
+                    Position[PositionX - 1, PositionY + 1].Id = "#";
+
+            }
+        }
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            int x = e.X;
+            int y = e.Y;
+            int PositionX = (e.X - 20) / 100;
+            int PositionY = (e.Y - 20) / 100;
+           
+            if (Position[PositionX, PositionY].Id == "#")
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Position[i, j].Acive == true)
+                            CheckerMove(new Point(j, i), new Point(PositionX, PositionY), move);
+
+                    }
+                }
+            }
+            Control();
+
+            CheckOpponent( PositionX,  PositionY);
+
+
+
 
             Pen Black = new Pen(Color.Black, 1);
             Pen Red = new Pen(Color.Red, 2);
