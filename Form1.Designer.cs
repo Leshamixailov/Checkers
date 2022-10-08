@@ -42,7 +42,7 @@
             this.новаяИграToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(913, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(855, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -58,12 +58,12 @@
             // 
             this.начатьToolStripMenuItem.Name = "начатьToolStripMenuItem";
             this.начатьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.начатьToolStripMenuItem.Text = "начать";
+            this.начатьToolStripMenuItem.Text = "Новая игра";
             this.начатьToolStripMenuItem.Click += new System.EventHandler(this.начатьToolStripMenuItem_Click);
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(56, 64);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 27);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(821, 821);
             this.pictureBox1.TabIndex = 1;
@@ -73,7 +73,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(913, 890);
+            this.ClientSize = new System.Drawing.Size(855, 865);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
