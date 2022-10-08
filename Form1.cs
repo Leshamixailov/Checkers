@@ -56,9 +56,11 @@ namespace Checkers
                        
                        
                     }
+                    char Letter = 'A';
                     for (int j = 0; j < countVertical; j++)
                     {
                         g.DrawString((j+1).ToString(), font, Brushes.Black, 0, 20 + j * 100);
+                        g.DrawString((Letter++).ToString(), font, Brushes.Black, 20 + j * 100,0 );
                     }
 
                 }
