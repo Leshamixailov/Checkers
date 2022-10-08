@@ -29,8 +29,8 @@ namespace Checkers
                 {
 
                     Position[i, j] = new Position();
-                    Position[i, j].x = i;
-                    Position[i, j].y = j;
+                    Position[i, j].y = i;
+                    Position[i, j].x = j;
                     if (i % 2 == 1)
                     {
                         if (j % 2 == 1)
@@ -171,14 +171,8 @@ namespace Checkers
             
         }
 
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        private void drawing()
         {
-            if(start)
-            { 
-            int x = e.X;
-            int y = e.Y;
-            int PositionX = (e.X-20)%100;
-            int PositionY = (e.Y-20)%100;
             Pen Black = new Pen(Color.Black, 1);
             Pen Red = new Pen(Color.Red, 2);
             Pen Purple = new Pen(Color.Purple, 2);
@@ -232,13 +226,18 @@ namespace Checkers
 
                         }
 
-                            if (Position[i, j].Id == "#")
-                            {
-                                g.FillRectangle(Brushes.Yellow, i * 100 + 20, j * 100 + 20, 100, 100);
-                                g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
-                            }
-
+                        if (Position[i, j].Id == "#")
+                        {
+                            g.FillRectangle(Brushes.Yellow, i * 100 + 20, j * 100 + 20, 100, 100);
+                            g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
                         }
+
+                        if (Position[i, j].Id == "*")
+                        {
+                            g.FillRectangle(Brushes.Red, i * 100 + 20, j * 100 + 20, 100, 100);
+                            g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
+                        }
+                    }
                     char Letter = 'A';
                     for (int j = 0; j < countVertical; j++)
                     {
@@ -250,17 +249,42 @@ namespace Checkers
 
                 }
             }
+        }
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            int x = e.X;
+            int y = e.Y;
+            int PositionX = (e.X - 20) / 100;
+            int PositionY = (e.Y - 20) / 100;
+            label1.Text = PositionX.ToString();
+            label2.Text = PositionY.ToString();
+            if (start)
+            {
+
+                drawing();
             }
         }
         private void CheckerMove(Point to,Point from,bool move1)
         {
+            Control();
+            int XNew = from.X - to.X;
+            int YNew = from.Y - to.Y;
+            if (YNew <= -2)
+            {
+                Position[(to.X+from.X)/2, (to.Y + from.Y) / 2].Id = "Пусто";
+            }
+            if (YNew >= 2)
+            {
+                Position[(to.X + from.X) / 2, (to.Y + from.Y) / 2].Id = "Пусто";
+            }
+
             Position[to.X, to.Y].Id = "Пусто";
             if(move1)
             Position[from.X, from.Y].Id = "Белая шашка";
             else
             Position[from.X, from.Y].Id = "Черная шашка";
             move = !move;
-            Control();
+            
         }
         private void Control()
         {
@@ -271,30 +295,59 @@ namespace Checkers
                     Position[i, j].Acive = false;
                     if (Position[i, j].Id == "#")
                         Position[i, j].Id = "Пусто";
+                    if (Position[i, j].Id == "*")
+                        Position[i, j].Id = "Пусто";
                 }
             }
         }
         private void CheckOpponent(int PositionX, int PositionY)
         {
             Position[PositionY, PositionX].Acive = true;
-
+            bool priority=false;
+           
             if (move && Position[PositionX, PositionY].Id == "Белая шашка")
             {
+                if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
+                {
+                    Position[PositionX - 2, PositionY - 2].Id = "*";
+                    priority=true;
+                }
+                    
+                
 
-                if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Пусто")
+                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
+                {
+                    Position[PositionX + 2, PositionY - 2].Id = "*";
+                    priority = true;
+                }
+               if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Пусто" && !priority)
                     Position[PositionX - 1, PositionY - 1].Id = "#";
 
-
-                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Пусто")
+                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Пусто" && !priority)
                     Position[PositionX + 1, PositionY - 1].Id = "#";
+                
             }
             if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
             {
-                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Пусто")
-                    Position[PositionX + 1, PositionY + 1].Id = "#";
+                
+                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
+                {
+                    Position[PositionX + 2, PositionY + 2].Id = "*";
 
-                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Пусто")
+                    priority = true;
+                }
+                   
+
+                
+                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
+                {
+                    Position[PositionX - 2, PositionY + 2].Id = "*";
+                    priority = true;
+                }
+                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Пусто" && !priority)
                     Position[PositionX - 1, PositionY + 1].Id = "#";
+                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Пусто" && !priority)
+                    Position[PositionX + 1, PositionY + 1].Id = "#";
 
             }
         }
@@ -305,7 +358,7 @@ namespace Checkers
             int PositionX = (e.X - 20) / 100;
             int PositionY = (e.Y - 20) / 100;
            
-            if (Position[PositionX, PositionY].Id == "#")
+            if (Position[PositionX, PositionY].Id == "#" || Position[PositionX, PositionY].Id == "*")
             {
                 for (int i = 0; i < 8; i++)
                 {
@@ -324,79 +377,7 @@ namespace Checkers
 
 
 
-            Pen Black = new Pen(Color.Black, 1);
-            Pen Red = new Pen(Color.Red, 2);
-            Pen Purple = new Pen(Color.Purple, 2);
-            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            int countHorizontal = pictureBox1.Width / 100;
-            int countVertical = pictureBox1.Height / 100;
-            Font font = new Font("Segoe UI", 10, FontStyle.Regular);
-
-            using (Graphics g = Graphics.FromImage(pictureBox1.Image))
-            {
-                for (int i = 0; i < countHorizontal; i++)
-                {
-                    for (int j = 0; j < countVertical; j++)
-                    {
-                       
-                       
-                        if (i % 2 == 1)
-                        {
-                            if (j % 2 == 0)
-                            {
-                                g.FillRectangle(Brushes.Black, i * 100 + 20, j * 100 + 20, 100, 100);
-                                g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
-                                if (Position[i, j].Id == "Черная шашка")
-                                {
-                                    g.FillEllipse(Brushes.Brown, i * 100 + 30, j * 100 + 30, 80, 80);
-                                    g.DrawEllipse(Red, i * 100 + 30, j * 100 + 30, 80, 80);
-                                }
-                                if (Position[i, j].Id == "Белая шашка")
-                                {
-                                    g.FillEllipse(Brushes.SkyBlue, i * 100 + 30, j * 100 + 30, 80, 80);
-                                    g.DrawEllipse(Purple, i * 100 + 30, j * 100 + 30, 80, 80);
-                                }
-                            }
-
-                        }
-                        if (i % 2 == 0)
-                        {
-                            if (j % 2 == 1)
-                            {
-                                g.FillRectangle(Brushes.Black, i * 100 + 20, j * 100 + 20, 100, 100);
-                                g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
-                                if (Position[i, j].Id == "Черная шашка")
-                                {
-                                    g.FillEllipse(Brushes.Brown, i * 100 + 30, j * 100 + 30, 80, 80);
-                                    g.DrawEllipse(Red, i * 100 + 30, j * 100 + 30, 80, 80);
-                                }
-                                if (Position[i, j].Id == "Белая шашка")
-                                {
-                                    g.FillEllipse(Brushes.SkyBlue, i * 100 + 30, j * 100 + 30, 80, 80);
-                                    g.DrawEllipse(Purple, i * 100 + 30, j * 100 + 30, 80, 80);
-                                }
-                            }
-
-                        }
-                        if (Position[i, j].Id == "#")
-                        {
-                            g.FillRectangle(Brushes.Yellow, i * 100 + 20, j * 100 + 20, 100, 100);
-                            g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
-                        }
-
-
-                    }
-                    char Letter = 'A';
-                    for (int j = 0; j < countVertical; j++)
-                    {
-                        g.DrawString((8 - j).ToString(), font, Brushes.Black, 0, 20 + j * 100);
-                        g.DrawString((Letter++).ToString(), font, Brushes.Black, 20 + j * 100, 0);
-                    }
-
-
-
-                }
-            }
+            drawing();
         }
     }
 }
