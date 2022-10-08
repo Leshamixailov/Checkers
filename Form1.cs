@@ -28,7 +28,8 @@ namespace Checkers
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             int countHorizontal = pictureBox1.Width / 8;
             int countVertical = pictureBox1.Height / 8;
-           
+            Font font = new Font("Segoe UI", 10, FontStyle.Regular);
+
             using (Graphics g = Graphics.FromImage(pictureBox1.Image))
             {
                 for (int i = 0; i < countHorizontal; i++)
@@ -38,8 +39,8 @@ namespace Checkers
                         if (i%2==1 )
                         {   if (j % 2 == 1)
                             {
-                                g.FillRectangle(Brushes.Black, i * 100, j * 100, 100, 100);
-                                g.DrawRectangle(Black, i * 100, j * 100, 100, 100);
+                                g.FillRectangle(Brushes.Black, i * 100 + 20, j * 100 + 20, 100, 100);
+                                g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
                             }
                          
                         }
@@ -47,12 +48,19 @@ namespace Checkers
                         {
                             if (j % 2 == 0)
                             {
-                                g.FillRectangle(Brushes.Black, i * 100, j * 100, 100, 100);
-                                g.DrawRectangle(Black, i * 100, j * 100, 100, 100);
+                                g.FillRectangle(Brushes.Black, i * 100+20, j * 100 + 20, 100, 100);
+                                g.DrawRectangle(Black, i * 100 + 20, j * 100 + 20, 100, 100);
                             }
                         }
 
+                       
+                       
                     }
+                    for (int j = 0; j < countVertical; j++)
+                    {
+                        g.DrawString((j+1).ToString(), font, Brushes.Black, 0, 20 + j * 100);
+                    }
+
                 }
             }
             
