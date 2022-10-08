@@ -307,19 +307,33 @@ namespace Checkers
            
             if (move && Position[PositionX, PositionY].Id == "Белая шашка")
             {
+                if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
+                {
+                    Position[PositionX - 2, PositionY + 2].Id = "*";
+                    priority = true;
+                }
+
+
+                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
+                {
+                    Position[PositionX + 2, PositionY + 2].Id = "*";
+                    priority = true;
+                }
+
+                /////бить назад
                 if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                 {
                     Position[PositionX - 2, PositionY - 2].Id = "*";
                     priority=true;
                 }
-                    
-                
+                              
 
                 if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
                 {
                     Position[PositionX + 2, PositionY - 2].Id = "*";
                     priority = true;
                 }
+                ////бить вперед
                if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Пусто" && !priority)
                     Position[PositionX - 1, PositionY - 1].Id = "#";
 
@@ -329,7 +343,22 @@ namespace Checkers
             }
             if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
             {
-                
+                //бить назад
+                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
+                {
+                    Position[PositionX + 2, PositionY - 2].Id = "*";
+
+                    priority = true;
+                }
+
+
+
+                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
+                {
+                    Position[PositionX - 2, PositionY - 2].Id = "*";
+                    priority = true;
+                }
+                ///  бить вперед 
                 if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
                 {
                     Position[PositionX + 2, PositionY + 2].Id = "*";
