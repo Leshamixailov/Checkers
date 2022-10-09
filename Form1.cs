@@ -19,6 +19,7 @@ namespace Checkers
         public Position[,] Position = new Position[9, 9];
         public bool move = true;//ход черных
         bool start=false;
+        Image image = new Bitmap("crown.png");
         private void начатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             start = true;
@@ -197,11 +198,25 @@ namespace Checkers
                                 {
                                     g.FillEllipse(Brushes.Brown, i * 100 + 30, j * 100 + 30, 80, 80);
                                     g.DrawEllipse(Red, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    
                                 }
                                 if (Position[i, j].Id == "Белая шашка")
                                 {
                                     g.FillEllipse(Brushes.SkyBlue, i * 100 + 30, j * 100 + 30, 80, 80);
                                     g.DrawEllipse(Purple, i * 100 + 30, j * 100 + 30, 80, 80);
+                                  
+                                }
+                                if (Position[i, j].Id == "Черная дамка")
+                                {
+                                    g.FillEllipse(Brushes.Brown, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawEllipse(Red, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawImage(image, i * 100 + 40, j * 100 + 40, 60, 60);
+                                }
+                                if (Position[i, j].Id == "Белая дамка")
+                                {
+                                    g.FillEllipse(Brushes.SkyBlue, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawEllipse(Purple, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawImage(image, i * 100 + 40, j * 100 + 40, 60, 60);
                                 }
                             }
 
@@ -221,6 +236,18 @@ namespace Checkers
                                 {
                                     g.FillEllipse(Brushes.SkyBlue, i * 100 + 30, j * 100 + 30, 80, 80);
                                     g.DrawEllipse(Purple, i * 100 + 30, j * 100 + 30, 80, 80);
+                                }
+                                if (Position[i, j].Id == "Черная дамка")
+                                {
+                                    g.FillEllipse(Brushes.Brown, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawEllipse(Red, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawImage(image, i * 100 + 40, j * 100 + 40, 60, 60);
+                                }
+                                if (Position[i, j].Id == "Белая дамка")
+                                {
+                                    g.FillEllipse(Brushes.SkyBlue, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawEllipse(Purple, i * 100 + 30, j * 100 + 30, 80, 80);
+                                    g.DrawImage(image, i * 100 + 40, j * 100 + 40, 60, 60);
                                 }
                             }
 
@@ -287,11 +314,17 @@ namespace Checkers
             Position[to.X, to.Y].Id = "Пусто";
             if (move1)
             {
+                if(from.Y!=0)
                 Position[from.X, from.Y].Id = "Белая шашка";
+                else
+                Position[from.X, from.Y].Id = "Белая дамка";
             }
             else
             {
+                if (from.Y != 7)
                 Position[from.X, from.Y].Id = "Черная шашка";
+                else
+                Position[from.X, from.Y].Id = "Черная дамка";
             }
             
 
@@ -379,7 +412,7 @@ namespace Checkers
                     }
 
 
-                if (PositionY != 0 && PositionX != 0)
+                if (PositionY != 0 && PositionX != 0 && PositionX != 1)
                     if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                     {
                         a.Add(new Point(PositionX, PositionX));
@@ -393,7 +426,7 @@ namespace Checkers
                     }
 
 
-                if (PositionY != 7 && PositionX != 0)
+                if (PositionY != 7 && PositionX != 0 && PositionX != 1)
                     if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
                     {
                         a.Add(new Point(PositionX, PositionX));
@@ -428,7 +461,7 @@ namespace Checkers
                     }
 
                 /////бить назад
-                if (PositionY!=0 && PositionX!=0)
+                if (PositionY!=0 && PositionX!=0 && PositionY != 1)
                     if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                 {
                     Position[PositionX - 2, PositionY - 2].Id = "*";
