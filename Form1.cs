@@ -298,37 +298,77 @@ namespace Checkers
                 drawing();
             }
         }
-        private bool CheckerMove(Point to,Point from,bool move1)
+        private bool CheckerMove(Point to,Point from)
         {
             Control();
             int XNew = from.X - to.X;
             int YNew = from.Y - to.Y;
-            
+            string Delta="";
+            string Save = Position[to.X, to.Y].Id;
+
+            if (XNew > 0 && YNew > 0)
+                Delta = "DownRigth";
+            if (XNew < 0 && YNew < 0)//
+                Delta = "UpLeft";
+            if (XNew > 0 && YNew < 0)//
+                Delta = "UpRigth";
+            if (XNew < 0 && YNew > 0)
+                Delta = "DownLeft";
+            int count = 0;
+            int x1 = to.X;
+            int y1 = to.Y;
             if (Math.Abs(YNew ) >=2)
             {
-                Position[(to.X+from.X)/2, (to.Y + from.Y) / 2].Id = "Пусто";
+                while (x1 != from.X || y1 != from.Y)
+                {
+                    
+                    if (Delta == "DownRigth")
+                    {
+                        Position[x1++, y1++].Id = "Пусто";
+                    }
+                    if (Delta == "UpLeft")
+                    {
+                        Position[x1--, y1--].Id = "Пусто";
+                    }
+                    if (Delta == "UpRigth")
+                    {
+                        Position[x1++, y1--].Id = "Пусто";
+                    }
+                    if (Delta == "DownLeft")
+                    {
+                        Position[x1--, y1++].Id = "Пусто";
+                    }
+                    count++;
+                }
+                   
+
+                //Position[(to.X+from.X)/2, (to.Y + from.Y) / 2].Id = "Пусто";
               
             }
-          
-            
 
 
-           Position[to.X, to.Y].Id = "Пусто";
+
+            Position[to.X, to.Y].Id = Save;
+
+
             if (move)
             {
-                if(from.Y!=0 )
-                Position[from.X, from.Y].Id = "Белая шашка";
-                if (from.Y == 0 || Position[to.X, to.Y].Id == "Черная дамка")
-                Position[from.X, from.Y].Id = "Черная дамка";
+                if (from.Y != 7)
+                    Position[from.X, from.Y].Id = "Черная шашка";
+                if (from.Y == 7 || Position[to.X, to.Y].Id == "Черная дамка")
+                    Position[from.X, from.Y].Id = "Черная дамка";
             }
             else
             {
-                if (from.Y != 7)
-                Position[from.X, from.Y].Id = "Черная шашка";
-                if (from.Y == 7 || Position[to.X, to.Y].Id == "Белая дамка")
+               
+
+
+                if (from.Y != 0)
+                    Position[from.X, from.Y].Id = "Белая шашка";
+                if (from.Y == 0 || Position[to.X, to.Y].Id == "Белая дамка")
                     Position[from.X, from.Y].Id = "Белая дамка";
             }
-            
+            Position[to.X, to.Y].Id = "Пусто";
 
 
             if (Math.Abs(from.X - to.X) < 2)
@@ -374,7 +414,7 @@ namespace Checkers
         {
             int a = 0;
 
-            if (move && Position[PositionX, PositionY].Id == "Белая шашка")
+            if (!move && Position[PositionX, PositionY].Id == "Белая шашка")
             {
                 if (PositionY != 7 && PositionX != 0 && PositionX != 1)
                     if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
@@ -405,7 +445,7 @@ namespace Checkers
 
 
             }
-            if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
+            if (move && Position[PositionX, PositionY].Id == "Черная шашка")
             {
                 //бить назад
                 if (PositionY != 0 && PositionX != 7)
@@ -626,7 +666,7 @@ namespace Checkers
                 Position[PositionY, PositionX].Acive = true;
                 bool priority = false;
                 
-                if (move && Position[PositionX, PositionY].Id == "Белая шашка")
+                if (!move && Position[PositionX, PositionY].Id == "Белая шашка")
                 {
                     if (PositionY != 7 && PositionX != 0)
                         if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
@@ -668,7 +708,7 @@ namespace Checkers
                         Position[PositionX + 1, PositionY - 1].Id = "#";
 
                 }
-                if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
+                if (move && Position[PositionX, PositionY].Id == "Черная шашка")
                 {
                     //бить назад
                     if (PositionY != 0 && PositionX != 7)
@@ -834,7 +874,7 @@ namespace Checkers
 
 
                 }
-                if (!move && Position[PositionX, PositionY].Id == "Черная дамка")
+                if (move && Position[PositionX, PositionY].Id == "Черная дамка")
                 {
 
                     if (PositionX != 0 && PositionY != 0)
@@ -962,7 +1002,7 @@ namespace Checkers
             //Position[PositionY, PositionX].Acive = true;
            
             bool check = false;
-            if (move && Position[PositionX, PositionY].Id == "Белая шашка")
+            if (!move && Position[PositionX, PositionY].Id == "Белая шашка")
             {
                 if (PositionY != 7 && PositionX != 0)
                     if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
@@ -996,7 +1036,7 @@ namespace Checkers
                 
 
             }
-            if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
+            if (move && Position[PositionX, PositionY].Id == "Черная шашка")
             {
                 //бить назад
                 if (PositionY != 0 && PositionX != 7)
@@ -1062,7 +1102,7 @@ namespace Checkers
                             //if (Math.Abs(PositionX - j) >= 2)
                             //    aq = true;
                             if (Position[i, j].Acive == true)
-                                CheckerMove(new Point(j, i), new Point(PositionX, PositionY), move);
+                                CheckerMove(new Point(j, i), new Point(PositionX, PositionY));
 
                         }
                     }
@@ -1084,7 +1124,7 @@ namespace Checkers
                               
                                
                                 if (Position[i, j].Acive == true)
-                                    CheckerMove(new Point(j, i), new Point(PositionX, PositionY), move);
+                                    CheckerMove(new Point(j, i), new Point(PositionX, PositionY));
                                
                             }    
                                 
