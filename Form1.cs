@@ -47,6 +47,7 @@ namespace Checkers
                             Position[i, j].Id = "Белая клетка";
                         }
                     }
+
                     if (Position[i, j].Id == "Пусто" && j >= 0 && j <= 2)
                     {
                         Position[i, j].Id = "Черная шашка";
@@ -290,6 +291,7 @@ namespace Checkers
             int PositionY = (e.Y - 20) / 100;
             label1.Text = PositionX.ToString();
             label2.Text = PositionY.ToString();
+            label3.Text = move.ToString();
             if (start)
             {
 
@@ -311,29 +313,29 @@ namespace Checkers
             
 
 
-           
-            if (move1)
+           Position[to.X, to.Y].Id = "Пусто";
+            if (move)
             {
                 if(from.Y!=0 )
                 Position[from.X, from.Y].Id = "Белая шашка";
-                if (from.Y == 0 || Position[to.X, to.Y].Id == "Белая дамка")
-                Position[from.X, from.Y].Id = "Белая дамка";
+                if (from.Y == 0 || Position[to.X, to.Y].Id == "Черная дамка")
+                Position[from.X, from.Y].Id = "Черная дамка";
             }
             else
             {
                 if (from.Y != 7)
                 Position[from.X, from.Y].Id = "Черная шашка";
-                if (from.Y == 7 || Position[to.X, to.Y].Id == "Черная дамка")
-                    Position[from.X, from.Y].Id = "Черная дамка";
+                if (from.Y == 7 || Position[to.X, to.Y].Id == "Белая дамка")
+                    Position[from.X, from.Y].Id = "Белая дамка";
             }
-            Position[to.X, to.Y].Id = "Пусто";
+            
 
 
             if (Math.Abs(from.X - to.X) < 2)
                 move = !move;
             else
             {
-                if(CheckOpponent1(from.X, from.Y).Count==0)
+                if(CheckOpponent1(from.X, from.Y)==0)
                 move = !move;
             }
            
@@ -368,38 +370,39 @@ namespace Checkers
                 }
             }
         }
-        private List<Point> CheckOpponent1(int PositionX, int PositionY)
+        private int CheckOpponent1(int PositionX, int PositionY)
         {
-            List<Point> a=new List<Point>();
+            int a = 0;
 
             if (move && Position[PositionX, PositionY].Id == "Белая шашка")
             {
                 if (PositionY != 7 && PositionX != 0 && PositionX != 1)
                     if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
                     }
 
                 if (PositionY != 7 && PositionX != 7)
                     if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
+
                     }
 
                 /////бить назад
                 if (PositionY != 0 && PositionX != 0 && PositionX!=1 && PositionY != 1)
                     if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
                     }
 
                 if (PositionY != 0 && PositionX != 7 && PositionY != 1)
                     if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
                     }
-               
-                
+
+
 
             }
             if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
@@ -408,20 +411,20 @@ namespace Checkers
                 if (PositionY != 0 && PositionX != 7)
                     if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
                     }
 
 
                 if (PositionY != 0 && PositionX != 0 && PositionX != 1)
                     if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
                     }
                 ///  бить вперед 
                 if (PositionY != 7 && PositionX != 7)
                     if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
 
                     }
 
@@ -429,438 +432,528 @@ namespace Checkers
                 if (PositionY != 7 && PositionX != 0 && PositionX != 1)
                     if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
                     {
-                        a.Add(new Point(PositionX, PositionX));
+                        a++;
                     }
-                
+
+                if ( Position[PositionX, PositionY].Id == "Белая дамка")
+                {
+                    
+                    if (PositionX > 0 && PositionY > 0)
+                    {
+                        bool stop = false;
+                        int x = PositionX - 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                            x--;
+                            y--;
+                                if (x == -1 || y == -1)
+                                { stop = true; break; }
+                           
+                           
+                        }
+                    }
+
+                    //вверх вправо
+                    if (PositionX < 7 && PositionY > 0)
+                    {
+                        bool stop = false;
+                        int x = PositionX + 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                            x++;
+                                y--;
+                                if (x == 8 || y == -1)
+                                { stop = true; break; }
+
+                            
+                           
+                        }
+                    }
+
+                    //вниз влево
+                    if (PositionX > 0 && PositionY < 7)
+                    {
+                        bool stop = false;
+                        int x = PositionX - 1;
+                        int y = PositionY + 1;
+                        while (!stop)
+                        {
+
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                                x--;
+                                y++;
+                                if (x == -1 || y == 8)
+                                { stop = true; break; }
+
+                           
+                        }
+                    }
+
+                    //вниз вправо
+                    if (PositionX < 7 && PositionY < 7)
+                    {
+                        bool stop = false;
+                        int x = PositionX + 1;
+                        int y = PositionY + 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                                x++;
+                                y++;
+                                if (x == 8 || y == 8)
+                                { stop = true; break; }
+
+                            
+                            
+                        }
+                    }
+
+                }
+                if (Position[PositionX, PositionY].Id == "Черная дамка")
+                {
+                    if (PositionX > 0 && PositionY > 0)
+                    {
+                        bool stop = false;
+                        int x = PositionX - 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                            x--;
+                            y--;
+                            if (x == -1 || y == -1)
+                            { stop = true; break; }
+
+
+                        }
+                    }
+
+                    //вверх вправо
+                    if (PositionX < 7 && PositionY > 0)
+                    {
+                        bool stop = false;
+                        int x = PositionX + 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                            x++;
+                            y--;
+                            if (x == 8 || y == -1)
+                            { stop = true; break; }
+
+
+
+                        }
+                    }
+
+                    //вниз влево
+                    if (PositionX > 0 && PositionY < 7)
+                    {
+                        bool stop = false;
+                        int x = PositionX - 1;
+                        int y = PositionY + 1;
+                        while (!stop)
+                        {
+
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                            x--;
+                            y++;
+                            if (x == -1 || y == 8)
+                            { stop = true; break; }
+
+
+                        }
+                    }
+
+                    //вниз вправо
+                    if (PositionX < 7 && PositionY < 7)
+                    {
+                        bool stop = false;
+                        int x = PositionX + 1;
+                        int y = PositionY + 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "*")
+                            {
+                                a++;
+                            }
+                            x++;
+                            y++;
+                            if (x == 8 || y == 8)
+                            { stop = true; break; }
+
+
+
+                        }
+                    }
+                }
 
             }
-
             return a;
         }
         private bool CheckOpponent(int PositionX, int PositionY)
         {
-            Position[PositionY, PositionX].Acive = true;
-            bool priority=false;
-            bool check=false; 
-            if (move && Position[PositionX, PositionY].Id == "Белая шашка")
+            bool check = false;
+            try
             {
-                if (PositionY!=7 && PositionX!=0 )
-                    if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
-                {
-                    Position[PositionX - 2, PositionY + 2].Id = "*";
-                    priority = true;
-                        check= true;
-                }
-
-                if (PositionY != 7 && PositionX!=7)
-                    if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
-                {
-                    Position[PositionX + 2, PositionY + 2].Id = "*";
-                    priority = true;
-                        check = true;
-                    }
-
-                /////бить назад
-                if (PositionY!=0 && PositionX!=0 && PositionY != 1 && PositionX!=1)
-                    if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
-                {
-                    Position[PositionX - 2, PositionY - 2].Id = "*";
-                    priority=true;
-                        check = true;
-                    }
-
-                if (PositionY != 0 && PositionX!=7 && PositionY != 1)
-                    if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
-                {
-                    Position[PositionX + 2, PositionY - 2].Id = "*";
-                    priority = true;
-                        check = true;
-                    }
-                ////бить вперед
-               if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Пусто" && !priority)
-                    Position[PositionX - 1, PositionY - 1].Id = "#";
-
-                if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Пусто" && !priority)
-                    Position[PositionX + 1, PositionY - 1].Id = "#";
+                Control();
+                Position[PositionY, PositionX].Acive = true;
+                bool priority = false;
                 
-            }
-            if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
-            {
-                //бить назад
-                if(PositionY !=0 && PositionX!=7)
-                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
+                if (move && Position[PositionX, PositionY].Id == "Белая шашка")
                 {
-                    Position[PositionX + 2, PositionY - 2].Id = "*";
-
-                    priority = true;
-                        check = true;
-                    }
-
-
-                if (PositionY!=0 && PositionX!=0)
-                    if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
-                {
-                    Position[PositionX - 2, PositionY - 2].Id = "*";
-                    priority = true;
-                        check = true;
-                    }
-                ///  бить вперед 
-                 if(PositionY!=7 && PositionX!=7)
-                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
-                {
-                    Position[PositionX + 2, PositionY + 2].Id = "*";
-
-                    priority = true;
-                        check = true;
-                    }
-
-
-                if (PositionY!=7 && PositionX!=0 && PositionX != 1)
-                    if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
-                {
-                    Position[PositionX - 2, PositionY + 2].Id = "*";
-                    priority = true;
-                        check = true;
-                    }
-                if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Пусто" && !priority)
-                    Position[PositionX - 1, PositionY + 1].Id = "#";
-                if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Пусто" && !priority)
-                    Position[PositionX + 1, PositionY + 1].Id = "#";
-
-            }
-            
-            if (!move && Position[PositionX, PositionY].Id == "Белая дамка")
-            {
-                int count = 0;
-                if (PositionX > 0 && PositionY > 0)
-                {
-                    bool stop = false;
-                    int x = PositionX - 1;
-                    int y = PositionY - 1;
-                    while (!stop)
-                    {
-                        if (Position[x, y].Id == "*")
+                    if (PositionY != 7 && PositionX != 0)
+                        if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
                         {
-                          
-                            x--;
-                            y--;
-                            if (x == -1 || y == -1)
-                            { stop = true; break; }
+                            Position[PositionX - 2, PositionY + 2].Id = "*";
+                            priority = true;
+                            check = true;
                         }
-                        if (Position[x, y].Id == "Пусто")
+
+                    if (PositionY != 7 && PositionX != 7)
+                        if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY + 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
                         {
-                            Position[x, y].Id = "#";
-                            x--;
-                            y--;
-                            if (x == -1 || y == -1)
-                               { stop = true; break; }
+                            Position[PositionX + 2, PositionY + 2].Id = "*";
+                            priority = true;
+                            check = true;
                         }
-                        if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Черная дамка" || Position[x, y].Id == "Черная шашка")
+
+                    /////бить назад
+                    if (PositionY != 0 && PositionX != 0 && PositionY != 1 && PositionX != 1)
+                        if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                         {
-                            x--;
-                            y--;
-                            if (x == -1 || y == -1)
-                            { stop = true; break; }
-                            if (x > 0 && y > 0)
-                                Position[x--, y--].Id = "*";
+                            Position[PositionX - 2, PositionY - 2].Id = "*";
+                            priority = true;
+                            check = true;
                         }
-                    }
+
+                    if (PositionY != 0 && PositionX != 7 && PositionY != 1)
+                        if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Черная шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
+                        {
+                            Position[PositionX + 2, PositionY - 2].Id = "*";
+                            priority = true;
+                            check = true;
+                        }
+                    ////бить вперед
+                    if (PositionX > 0 && PositionY > 0 && Position[PositionX - 1, PositionY - 1].Id == "Пусто" && !priority)
+                        Position[PositionX - 1, PositionY - 1].Id = "#";
+
+                    if (PositionX < 8 && PositionY > 0 && Position[PositionX + 1, PositionY - 1].Id == "Пусто" && !priority)
+                        Position[PositionX + 1, PositionY - 1].Id = "#";
+
+                }
+                if (!move && Position[PositionX, PositionY].Id == "Черная шашка")
+                {
+                    //бить назад
+                    if (PositionY != 0 && PositionX != 7)
+                        if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
+                        {
+                            Position[PositionX + 2, PositionY - 2].Id = "*";
+
+                            priority = true;
+                            check = true;
+                        }
+
+
+                    if (PositionY != 0 && PositionX != 0 && PositionX != 1)
+                        if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY - 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
+                        {
+                            Position[PositionX - 2, PositionY - 2].Id = "*";
+                            priority = true;
+                            check = true;
+                        }
+                    ///  бить вперед 
+                    if (PositionY != 7 && PositionX != 7)
+                        if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
+                        {
+                            Position[PositionX + 2, PositionY + 2].Id = "*";
+
+                            priority = true;
+                            check = true;
+                        }
+
+
+                    if (PositionY != 7 && PositionX != 0 && PositionX != 1)
+                        if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Белая шашка" && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
+                        {
+                            Position[PositionX - 2, PositionY + 2].Id = "*";
+                            priority = true;
+                            check = true;
+                        }
+                    if (PositionY < 8 && PositionX > 0 && Position[PositionX - 1, PositionY + 1].Id == "Пусто" && !priority)
+                        Position[PositionX - 1, PositionY + 1].Id = "#";
+                    if (PositionX < 8 && PositionY < 8 && Position[PositionX + 1, PositionY + 1].Id == "Пусто" && !priority)
+                        Position[PositionX + 1, PositionY + 1].Id = "#";
+
                 }
 
-                //вверх вправо
-                if (PositionX < 7 && PositionY > 0)
+                if (!move && Position[PositionX, PositionY].Id == "Белая дамка")
                 {
-                    bool stop = false;
-                    int x = PositionX + 1;
-                    int y = PositionY - 1;
-                    while (!stop)
+
+                    if (PositionX != 0 && PositionY != 0)
                     {
-                        if (Position[x, y].Id == "*")
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX - 1;
+                        int y = PositionY - 1;
+                        while (!stop)
                         {
+
+
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop1 = true; }
+
+                            x--;
+                            y--;
+
+                            if (x == -1 || y == -1)
+                            { stop = true; break; }
+
+
+
+
+
+                        }
+                    }
+
+                    //вверх вправо
+                    if (PositionX != 7 && PositionY !=0)
+                    {
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX + 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop1 = true; }
+                            x++;
+                            y--;
                             
-                            x++;
-                            y--;
+
                             if (x == 8 || y == -1)
                             { stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x++;
-                            y--;
-                            if (x == 8 || y == -1)
-                               {stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Черная дамка" || Position[x, y].Id == "Черная шашка")
-                        {
-                            x++;
-                            y--;
-                            if (x == 8 || y == -1)
-                            { stop = true; break; }
-                            if (PositionX < 7 && PositionY > 0)
-                                Position[x++, y--].Id = "*";
 
                         }
                     }
-                }
 
-                //вниз влево
-                if (PositionX > 0 && PositionY < 7)
-                {
-                    bool stop = false;
-                    int x = PositionX - 1;
-                    int y = PositionY + 1;
-                    while (!stop)
+                    //вниз влево
+                    if (PositionX != 0 && PositionY != 7 )
                     {
-
-                        if (Position[x, y].Id == "*")
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX - 1;
+                        int y = PositionY + 1;
+                        while (!stop)
                         {
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
 
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop1 = true; }
                             x--;
                             y++;
-                            if (x == -1 || y == 8)
-                            { stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x--;
-                            y++;
-                            if (x == -1 || y == 8)
-                            { stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
-                        {       stop = true; break;
-                        }
-                        if (Position[x, y].Id == "Черная дамка" || Position[x, y].Id == "Черная шашка")
-                        {
-                            x++;
-                            y--;
-                            if (x == 8 || y == -1)
-                            { stop = true; break; }
-                            if (x > 0 && y < 7)
-                                Position[x++, y--].Id = "*";
-                        }
-                    }
-                }
-
-                //вниз вправо
-                if (PositionX < 7 && PositionY < 7)
-                {
-                    bool stop = false;
-                    int x = PositionX + 1;
-                    int y = PositionY + 1;
-                    while (!stop)
-                    {
-                        if (Position[x, y].Id == "*")
-                        {
-                            
-                            x++;
-                            y++;
-                            if (x == 8 || y == 8)
-                            { stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x++;
-                            y++;
-                            if (x == 8 || y == 8)
-                               { stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Черная дамка" || Position[x, y].Id == "Черная шашка")
-                        {
-                            x++;
-                            y++;
-                            if (x == 8 || y == 8)
-                            { stop = true; break; }
-                            if (x < 7 && y < 7)
-                                Position[x++, y++].Id = "*";
-                        }
-                    }
-                }
-
-            }
-            if (!move && Position[PositionX, PositionY].Id == "Черная дамка")
-            {
-                int count = 0;
-                if (PositionX > 0 && PositionY > 0)
-                {
-                    bool stop = false;
-                    int x = PositionX - 1;
-                    int y = PositionY - 1;
-                    while (!stop)
-                    {
-
-                        if (Position[x, y].Id == "*")
-                        {
-                           
-                            x--;
-                            y--;
-                            if (x == -1 || y == -1)
-                            { stop = true; break; }
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x--;
-                            y--;
-                            if(x == -1 || y == -1)
-                               { stop = true; break; }
-                        }
-                        if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Белая дамка" || Position[x, y].Id == "Белая шашка")
-                        {
-                            
-                            x--;
-                            y--;
-                            if (x == -1 || y == -1)
-                            { stop = true; break; }
-                             if (x > 0 && y > 0)
-                                Position[x-1, y-1].Id = "*";
-                        }
-                    }
-                }
-
-                //вверх вправо
-                if (PositionX < 7 && PositionY > 0)
-                {
-                    bool stop = false;
-                    int x = PositionX + 1;
-                    int y = PositionY - 1;
-                    while (!stop)
-                    {
-
-                        if (Position[x, y].Id == "*")
-                        {
-
-                            x++;
-                            y--;
-                            if (x == 8 || y == -1)
-                            { stop = true; break; }
-
-
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x++;
-                            y--;
-                            if (x == 8 || y == -1)
-                               { stop = true; break; }
                            
 
+                            if (x == -1 || y == 8)
+                            { stop = true; break; }
+
                         }
-                        if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Белая дамка" || Position[x, y].Id == "Белая шашка")
+                    }
+
+                    //вниз вправо
+                    if (PositionX != 7 && PositionY != 7)
+                    {
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX + 1;
+                        int y = PositionY + 1;
+                        while (!stop)
                         {
+
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop1 = true; }
+                            y++;
+                            x++;
+                            if (x == 8 || y == 8)
+                            { stop = true; break; }
+
+                        }
+                    }
+
+
+                }
+                if (!move && Position[PositionX, PositionY].Id == "Черная дамка")
+                {
+
+                    if (PositionX != 0 && PositionY != 0)
+                    {
+                        bool stop = false;
+                        bool stop1 = false;
+
+
+                        int x = PositionX - 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                                { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if(!stop1)
+                                Position[x, y].Id = "#";
+                                else
+                                Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop1 = true; }
+                            x--;
+                            y--;
+
+                            if (x == -1 || y == -1)
+                            { stop = true; break; }
+
+
+
+
+
+                        }
+                    }
+
+                    //вверх вправо
+                    if (PositionX != 7 && PositionY != 0)
+                    {
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX + 1;
+                        int y = PositionY - 1;
+                        while (!stop)
+                        {
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop1 = true; }
                             x++;
                             y--;
                             if (x == 8 || y == -1)
                             { stop = true; break; }
-                            if (x < 7 && y > 0)
-                                Position[x+1, y-1].Id = "*";
+
                         }
                     }
-                }
 
-                //вниз влево
-                if (PositionX > 0 && PositionY < 7)
-                {
-                    bool stop = false;
-                    int x = PositionX - 1;
-                    int y = PositionY + 1;
-                    while (!stop)
+                    //вниз влево
+                    if (PositionX != 0 && PositionY != 7)
                     {
-
-
-                        if (Position[x, y].Id == "*")
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX - 1;
+                        int y = PositionY + 1;
+                        while (!stop)
                         {
-                           
+
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop1 = true; }
                             x--;
                             y++;
                             if (x == -1 || y == 8)
                             { stop = true; break; }
 
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x--;
-                            y++;
-                            if (x == -1 || y == 8)
-                               { stop = true;break; }
-
-                        }
-                        if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Белая дамка" || Position[x, y].Id == "Белая шашка")
-                        {
-                            x--;
-                            y++;
-                            if (x == -1 || y == 8)
-                            { stop = true; break; }
-                            if (x > 0 && y < 7)
-                            Position[x-1, y+1].Id = "*";
                         }
                     }
-                }
 
-                //вниз вправо
-                if (PositionX < 7 && PositionY < 7)
-                {
-                    bool stop = false;
-                    int x = PositionX + 1;
-                    int y = PositionY + 1;
-                    while (!stop)
+                    //вниз вправо
+                    if (PositionX != 7 && PositionY != 7)
                     {
-
-                        if (Position[x, y].Id == "*")
+                        bool stop = false; bool stop1 = false;
+                        int x = PositionX + 1;
+                        int y = PositionY + 1;
+                        while (!stop)
                         {
-                            
-                            x++;
+                            if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
+                            { stop = true; break; }
+                            if (Position[x, y].Id == "Пусто")
+                                if (!stop1)
+                                    Position[x, y].Id = "#";
+                                else
+                                    Position[x, y].Id = "*";
+
+                            if (Position[x, y].Id == "Белая шашка" || Position[x, y].Id == "Белая дамка")
+                            { stop1 = true; }
                             y++;
+                            x++;
                             if (x == 8 || y == 8)
                             { stop = true; break; }
 
-                        }
-                        if (Position[x, y].Id == "Пусто")
-                        {
-                            Position[x, y].Id = "#";
-                            x++;
-                            y++;
-                            if (x == 8 || y == 8)
-                               { stop = true; break; }
-
-                        }
-                        if (Position[x, y].Id == "Черная шашка" || Position[x, y].Id == "Черная дамка")
-                           { stop = true; break; }
-                        if (Position[x, y].Id == "Белая дамка" || Position[x, y].Id == "Белая шашка")
-                        {
-                            Position[x, y].Id = "#";
-                            x++;
-                            y++;
-                            if (x == 8 || y == 8)
-                            { stop = true; break; }
-                            if (x < 7 && y < 7)
-                                Position[x+1, y+1].Id = "*";
                         }
                     }
                 }
+            }
+            catch (Exception e )
+            {
+                MessageBox.Show(e.ToString() + " X" + PositionX + " Y" + PositionY);
             }
             return check;
         }
@@ -954,7 +1047,7 @@ namespace Checkers
             int a = 0;
             for (int i = 0; i < 8; i++)
                 for (int f = 0; f < 8; f++)
-                   a+= CheckOpponent1(i,f).Count;
+                   a+= CheckOpponent1(i,f);
 
 
             if (a == 0)
