@@ -185,6 +185,7 @@ namespace Checkers
             try { 
             Pen Black = new Pen(Color.Black, 1);
             Pen Red = new Pen(Color.Red, 2);
+            Pen Red2 = new Pen(Color.Red, 4);
             Pen Purple = new Pen(Color.Purple, 2);
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             int countHorizontal = pictureBox1.Width / 75;
@@ -227,6 +228,11 @@ namespace Checkers
                                     g.DrawEllipse(Purple, i * 75 + 30, j * 75 + 30, 55, 55);
                                     g.DrawImage(image, i * 75 + 40, j * 75 + 40, 35, 35);
                                 }
+                                 if (Position[i, j].Possible == true)
+                            {
+                              
+                                g.DrawRectangle(Red2, i * 75 + 20, j * 75 + 20, 75, 75);
+                            }
                             }
 
                         }
@@ -278,7 +284,12 @@ namespace Checkers
                             g.FillRectangle(Brushes.Red, i * 75 + 20, j * 75 + 20, 75, 75);
                             g.DrawRectangle(Black, i * 75 + 20, j * 75 + 20, 75, 75);
                         }
-                    }
+                       if (Position[i, j].Possible == true)
+                          {
+
+                                g.DrawRectangle(Red2, i * 75 + 20, j * 75 + 20, 75, 75);
+                          }
+                        }
                     char Letter = 'A';
                     for (int j = 0; j < countVertical; j++)
                     {
@@ -405,7 +416,7 @@ namespace Checkers
                 move = !move;
             else
             {
-                if(CheckOpponent1(from.X, from.Y)==0)
+                if(CheckOpponent1(from.X, from.Y).Count==0)
                 move = !move;
             }
 
@@ -431,7 +442,8 @@ namespace Checkers
                         Position[i, j].Id = "Пусто";
                     if (Position[i, j].Id == "*")
                         Position[i, j].Id = "Пусто";
-                }
+                       
+                    }
             }
             }
             catch (Exception ex)
@@ -439,24 +451,25 @@ namespace Checkers
 
             }
         }
-        private int CheckOpponent1(int PositionX, int PositionY)
-        {
+        private List<Point> CheckOpponent1(int PositionX, int PositionY)
+        {   
+            List<Point> a = new List<Point>();
             try
             {
-                int a = 0;
+                 
 
                 if (!move && Position[PositionX, PositionY].Id == "Белая шашка")
                 {
                     if (PositionY != 7 && PositionX != 0 && PositionX != 1)
                         if (PositionX > 0 && PositionY > 0 && (Position[PositionX - 1, PositionY + 1].Id == "Черная шашка" || Position[PositionX - 1, PositionY + 1].Id == "Черная дамка") && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
                         }
 
                     if (PositionY != 7 && PositionX != 7)
                         if (PositionX < 8 && PositionY > 0 && (Position[PositionX + 1, PositionY + 1].Id == "Черная шашка" || Position[PositionX + 1, PositionY + 1].Id == "Черная дамка") && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
 
                         }
 
@@ -464,13 +477,13 @@ namespace Checkers
                     if (PositionY != 0 && PositionX != 0 && PositionX != 1 && PositionY != 1)
                         if (PositionX > 0 && PositionY > 0 && (Position[PositionX - 1, PositionY - 1].Id == "Черная шашка" || Position[PositionX - 1, PositionY - 1].Id == "Черная дамка") && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
                         }
 
                     if (PositionY != 0 && PositionX != 7 && PositionY != 1)
                         if (PositionX < 8 && PositionY > 0 && (Position[PositionX + 1, PositionY - 1].Id == "Черная шашка" || Position[PositionX + 1, PositionY - 1].Id == "Черная дамка") && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
                         }
 
 
@@ -482,20 +495,20 @@ namespace Checkers
                     if (PositionY != 0 && PositionX != 7)
                         if (PositionX < 8 && PositionY < 8 && (Position[PositionX + 1, PositionY - 1].Id == "Белая шашка" || Position[PositionX + 1, PositionY - 1].Id == "Белая дамка") && Position[PositionX + 2, PositionY - 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
                         }
 
 
                     if (PositionY != 0 && PositionX != 0 && PositionX != 1)
                         if (PositionY < 8 && PositionX > 0 && (Position[PositionX - 1, PositionY - 1].Id == "Белая шашка" || Position[PositionX - 1, PositionY - 1].Id == "Белая дамка") && Position[PositionX - 2, PositionY - 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
                         }
                     ///  бить вперед 
                     if (PositionY != 7 && PositionX != 7)
                         if (PositionX < 8 && PositionY < 8 && (Position[PositionX + 1, PositionY + 1].Id == "Белая шашка" || Position[PositionX + 1, PositionY + 1].Id == "Белая дамка") && Position[PositionX + 2, PositionY + 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
 
                         }
 
@@ -503,7 +516,7 @@ namespace Checkers
                     if (PositionY != 7 && PositionX != 0 && PositionX != 1)
                         if (PositionY < 8 && PositionX > 0 && (Position[PositionX - 1, PositionY + 1].Id == "Белая шашка" || Position[PositionX - 1, PositionY + 1].Id == "Белая дамка") && Position[PositionX - 2, PositionY + 2].Id == "Пусто")
                         {
-                            a++;
+                            a.Add(new Point(PositionX, PositionY));
                         }
 
                     if (Position[PositionX, PositionY].Id == "Белая дамка")
@@ -518,7 +531,7 @@ namespace Checkers
                             {
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x--;
                                 y--;
@@ -539,7 +552,7 @@ namespace Checkers
                             {
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x++;
                                 y--;
@@ -562,7 +575,7 @@ namespace Checkers
 
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x--;
                                 y++;
@@ -583,7 +596,7 @@ namespace Checkers
                             {
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x++;
                                 y++;
@@ -607,7 +620,7 @@ namespace Checkers
                             {
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x--;
                                 y--;
@@ -628,7 +641,7 @@ namespace Checkers
                             {
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x++;
                                 y--;
@@ -651,7 +664,7 @@ namespace Checkers
 
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x--;
                                 y++;
@@ -672,7 +685,7 @@ namespace Checkers
                             {
                                 if (Position[x, y].Id == "*")
                                 {
-                                    a++;
+                                    a.Add(new Point(PositionX, PositionY));
                                 }
                                 x++;
                                 y++;
@@ -692,7 +705,7 @@ namespace Checkers
 
             catch (Exception ex)
             {
-                return 0;
+                return a; 
             }
         }
         private bool CheckOpponent(int PositionX, int PositionY)
@@ -1046,15 +1059,24 @@ namespace Checkers
                 int y = e.Y;
                 int PositionX = (e.X - 20) / 75;
                 int PositionY = (e.Y - 20) / 75;
-                int a = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+
+                        if (Position[i, j].Possible == true)
+                            Position[i, j].Possible = false;
+                    }
+                }
+                List<Point> a = new List<Point>();
                 for (int i = 0; i < 8; i++)
                     for (int f = 0; f < 8; f++)
-                        a += CheckOpponent1(i, f);
+                        a.AddRange(CheckOpponent1(i, f));
 
 
-                if (a == 0)
+                if (a.Count == 0)
                 {
-                    if (Position[PositionX, PositionY].Id == "#" || Position[PositionX, PositionY].Id == "*" || Position[PositionX, PositionY].Id == "!")
+                    if (Position[PositionX, PositionY].Id == "#" || Position[PositionX, PositionY].Id == "*" )
                     {
                         for (int i = 0; i < 8; i++)
                         {
@@ -1072,7 +1094,13 @@ namespace Checkers
                 }
                 else
                 {
-                    if (Position[PositionX, PositionY].Id == "*" || Position[PositionX, PositionY].Id == "!")
+                    foreach (var t in a)
+                    {
+                        Position[t.X, t.Y].Possible = true;
+                    }
+                    
+
+                    if (Position[PositionX, PositionY].Id == "*" )
                     {
                         for (int i = 0; i < 8; i++)
                         {
@@ -1093,7 +1121,7 @@ namespace Checkers
                     }
 
                     Control();
-
+                    
                     CheckOpponent(PositionX, PositionY);
                     drawing();
                 }

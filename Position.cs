@@ -12,5 +12,6 @@ namespace Checkers
         public int x = 0;
         public int y = 0;
         public bool Acive = true;
+        public bool Possible = false;
     }
 }
