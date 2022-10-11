@@ -19,13 +19,16 @@ namespace Checkers
         public Position[,] Position = new Position[9, 9];
         public bool move = true;//ход черных
         bool start=false;
+        private string FinishGame = "";
+        private bool Finish = false;
         Image image = new Bitmap("crown.png");
         private void начатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 start = true;
-
+                FinishGame = "";
+                Finish = false;
                 for (int i = 0; i <= 8; i++)
                 {
                     for (int j = 0; j <= 8; j++)
@@ -182,7 +185,10 @@ namespace Checkers
 
         private void drawing()
         {
-            try { 
+            try {
+
+                if (Finish)
+                    MessageBox.Show(FinishGame);
             Pen Black = new Pen(Color.Black, 1);
             Pen Red = new Pen(Color.Red, 2);
             Pen Red2 = new Pen(Color.Red, 4);
@@ -1125,6 +1131,25 @@ namespace Checkers
                     CheckOpponent(PositionX, PositionY);
                     drawing();
                 }
+                int countWhite = 0;
+                int countBlack = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (Position[i, j].Id == "Черная шашка" || Position[i, j].Id == "Черная шашка")
+                            countWhite++;
+                        if (Position[i, j].Id == "Белая шашка" || Position[i, j].Id == "Белая шашка")
+                            countBlack++;
+                    }
+                }
+                if (countWhite == 0)
+                {  FinishGame = "Победа синих";Finish = true; }
+                
+
+                if (countBlack == 0)
+                { FinishGame = "Победа красных"; Finish = true; }
+                
             }
             catch (Exception ex)
             { }
