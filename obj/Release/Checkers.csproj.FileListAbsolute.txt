@@ -1,0 +1,11 @@
+C:\Users\admin\source\repos\Checkers\bin\Release\Checkers.exe.config
+C:\Users\admin\source\repos\Checkers\bin\Release\Checkers.exe
+C:\Users\admin\source\repos\Checkers\bin\Release\Checkers.pdb
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.csproj.AssemblyReference.cache
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.csproj.SuggestedBindingRedirects.cache
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.Form1.resources
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.Properties.Resources.resources
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.csproj.GenerateResource.cache
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.exe
+C:\Users\admin\source\repos\Checkers\obj\Release\Checkers.pdb
